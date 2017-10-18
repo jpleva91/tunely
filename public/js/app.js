@@ -70,6 +70,17 @@ $(document).ready(function() {
     handleNewSongSubmit(e);
   });
 
+  $('#albums').on('click', '.delete-album', function(e) {
+    var currentAlbumId = $(this).parents('.album').data('album-id');
+    $.ajax({
+      url: '/api/albums/'+currentAlbumId,
+      type: 'DELETE',
+      success: function(result) {
+        console.log(result);
+      }
+    });
+  });
+
 });
 
 // call this when the button on the modal is clicked
@@ -155,6 +166,7 @@ function renderAlbum(album) {
 
   "              <div class='panel-footer'>" +
   "                 <button class='btn btn-primary add-song'>Add Song</button>" +
+  "                 <button class='btn btn-danger delete-album'>Delete Album</button>"
   "              </div>" +
 
   "            </div>" +

@@ -110,6 +110,12 @@ app.post('/api/albums/:album_id/songs', function add_songs(req, res) {
   });
 });
 
+app.delete('/api/albums/:id', function delete_album (req, res) {
+  console.log(req.params.id);
+  db.Album.findOne({"_id": req.params.id}).remove().exec();
+  res.status(200).send( {200: "Album Deleted"});
+});
+
 /**********
  * SERVER *
  **********/
