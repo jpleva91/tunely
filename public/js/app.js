@@ -79,6 +79,12 @@ $(document).ready(function() {
         console.log(result);
       }
     });
+    $('#albums').empty();
+    $.get('/api/albums', function(data) {
+      data.forEach(function(album) {
+        renderAlbum(album);
+      });
+    });
   });
 
 });
