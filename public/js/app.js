@@ -82,24 +82,26 @@ function handleNewSongSubmit(e) {
   formData.trackNumber = $('#trackNumber').val();
   var url = "/api/albums/" + currentAlbumId + "/songs";
   // POST to SERVER
-  $.post(url, formData, function(data) {
-    // console.log(data);
-    renderAlbum(data);
-  });
+  $.post(url, formData);
   // clear form
   $('#songName').val("");
   $('#trackNumber').val("");
+  $('#albums').empty();
+  // update the correct album to show the new song
+  $.get('/api/albums', function(data) {
+    data.forEach(function(album) {
+      renderAlbum(album);
+    });
+  });
   // close modal
   $('#songModal').modal('toggle');
-  // update the correct album to show the new song
-  $(this).closest('li').text('some text');
 }
 
 
 function buildSongsHtml(songs) {
   let songSpan = "";
   for (i = 0; i < songs.length; i ++) {
-    songSpan += "- ("+ i +") " + songs[i].name + " ";
+    songSpan += "- ("+ (i+1) +") " + songs[i].name + " ";
   }
 
   var songsHtml = 
