@@ -99,6 +99,17 @@ app.post('/api/albums', function add_album(req, res) {
   res.json(album);
 });
 
+app.post('/api/albums/:album_id/songs', function add_songs(req, res) {
+  console.log("Song Name: ",req.body.songName);
+  console.log("Track Number: ", req.body.trackNumber);
+  db.Album.findOneAndUpdate({ "_id": req.params.album_id }, {"$push": { "songs": {"name": req.body.songName, "trackNumber": req.body.trackNumber } } }, function(err, album) {
+  });
+  db.Album.findOne({"_id": req.params.album_id}, function(err, album) {
+    res.json(album);
+    console.log(album.songs);
+  });
+});
+
 /**********
  * SERVER *
  **********/

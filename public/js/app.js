@@ -42,8 +42,6 @@ $(document).ready(function() {
    $.get('/api/albums', function(data) {
     data.forEach(function(album) {
       renderAlbum(album);
-      //console.log(album.songs);
-      //buildSongsHtml(album.songs);
     });
     $('#singlebutton').on('click', function(el) {
       el.preventDefault();
@@ -60,7 +58,42 @@ $(document).ready(function() {
     });
   });
 
+  $('#albums').on('click', '.add-song', function(e) {
+    console.log("Add Song clicked!");
+    var currentAlbumId= $(this).parents('.album').data('album-id');
+    // console.log('album-id',currentAlbumId);
+    $('#songModal').data('album-id', currentAlbumId);
+    $('#songModal').modal();
+  });
+
+  $('#saveSong').on('click', function(e) {
+    handleNewSongSubmit(e);
+  });
+
 });
+
+// call this when the button on the modal is clicked
+function handleNewSongSubmit(e) {
+  e.preventDefault();
+  // get data from modal fields
+  var currentAlbumId = $('#songModal').data('album-id');
+  var formData = {};
+  formData.songName = $('#songName').val();
+  formData.trackNumber = $('#trackNumber').val();
+  var url = "/api/albums/" + currentAlbumId + "/songs";
+  // POST to SERVER
+  $.post(url, formData, function(data) {
+    // console.log(data);
+    renderAlbum(data);
+  });
+  // clear form
+  $('#songName').val("");
+  $('#trackNumber').val("");
+  // close modal
+  $('#songModal').modal('toggle');
+  // update the correct album to show the new song
+  $(this).closest('li').text('some text');
+}
 
 
 function buildSongsHtml(songs) {
